@@ -4,6 +4,10 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 
 on:
   workflow_call:
+    inputs:
+      env_with_suffix:
+        required: true
+        type: string
 
 jobs:
   Explore-GitHub-Actions:
@@ -20,3 +24,21 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+
+      - name: Set variables for notification message
+        shell: bash
+        run: |
+          MESSAGE="test [${ENV_WITH_SUFFIX}] is now deployed :tada:"
+
+          if [[ ${{ github.event_name }} = 'pull_request' ]]; then
+            PR_NUMBER=${{ github.event.pull_request.number }}
+
+            MESSAGE+="\nPR: https://github.com/fgxut/github_actions_test/pull/${PR_NUMBER}"
+          fi
+
+          MESSAGE+="\nWorkFlow Created By: ${{ github.actor }}"
+          MESSAGE+="\nLatest Commit Hash: ${{ github.sha }}"
+
+          echo MESSAGE="$MESSAGE" >> "$GITHUB_ENV"
+
+          echo "$GITHUB_ENV"
