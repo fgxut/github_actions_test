@@ -14,4 +14,4 @@ jobs:
       - name: Check NO_NEED_TO_DOUBLE_CHECK label
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'NO_NEED_TO_DOUBLE_CHECK') }}
         run: |
-          echo "NO_NEED_TO_DOUBLE_CHECK is labeled"
+          echo "NO_NEED_TO_DOUBLE_CHECK is not labeled"
