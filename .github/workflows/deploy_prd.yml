@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          g${{ toJson(github.event.pull_request.labels.*.name) }}
+          echo ${{ toJson(github.event.pull_request.labels.*.name) }}
       
       - name: Check NO_NEED_TO_DOUBLE_CHECK label
         if: contains(github.event.pull_request.labels.*.name, 'NO_NEED_TO_DOUBLE_CHECK')      
