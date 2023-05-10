@@ -42,7 +42,6 @@ jobs:
           MESSAGE+="\nWorkFlow Created By: ${{ github.actor }}"
           MESSAGE+="\nLatest Commit Hash: ${{ github.sha }}"
 
-
           echo MESSAGE="$MESSAGE" >> "$GITHUB_ENV"
 
       - name: Check GITHUB_ENV
