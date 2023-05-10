@@ -14,7 +14,7 @@ on:
       - labeled
 
 jobs:
-  check:
+  check_1:
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ toJson(github.event.pull_request.labels.*.name) }}
