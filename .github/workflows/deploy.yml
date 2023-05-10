@@ -50,7 +50,6 @@ jobs:
       - name: Check labels
         run: |
           x=${{ toJson(github.event.pull_request.labels.*.name) }}
-          echo "PR labels: $x"
 
       - name: Check NO_NEED_TO_DOUBLE_CHECK label
         if: contains(github.event.pull_request.labels.*.name, 'NO_NEED_TO_DOUBLE_CHECK')      
