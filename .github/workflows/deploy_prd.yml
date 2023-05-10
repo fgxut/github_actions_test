@@ -14,6 +14,9 @@ on:
       - labeled
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   deploy:
     if: contains(github.event.pull_request.labels.*.name, 'NO_NEED_TO_DOUBLE_CHECK')
     uses: ./.github/workflows/deploy.yml
