@@ -4,14 +4,8 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - labeled
+    tags-ignore:
+      - NO_NEED_TO_DOUBLE_CHECK
 
 jobs:
   check_1:
@@ -25,7 +19,6 @@ jobs:
     uses: ./.github/workflows/check.yml
 
   deploy:
-    if: ${{ !contains(github.ref, 'refs/tags/NO_NEED_TO_DOUBLE_CHECK') }}
     uses: ./.github/workflows/deploy.yml
     with:
       env_with_suffix: prd
