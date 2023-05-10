@@ -9,6 +9,9 @@ on:
         required: true
         type: string
 
+env:
+  ENV_WITH_SUFFIX: ${{ inputs.env_with_suffix }}
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
