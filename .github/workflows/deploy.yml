@@ -41,4 +41,8 @@ jobs:
 
           echo MESSAGE="$MESSAGE" >> "$GITHUB_ENV"
 
-          echo "$GITHUB_ENV"
+      - name: Check Message
+        run: echo "$MESSAGE"
+
+      - name: Check GITHUB_ENV
+        run: echo ${{ env.MESSAGE }}
