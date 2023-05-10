@@ -9,3 +9,5 @@ jobs:
   deploy:
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'NO_NEED_TO_DOUBLE_CHECK') }}
     uses: ./.github/workflows/deploy.yml
+    with:
+      env_with_suffix: prd
