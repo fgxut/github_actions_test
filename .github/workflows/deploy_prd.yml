@@ -28,10 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ needs.check.outputs.check_pr_labels_result }}
-  
+
   deploy:
     needs: check
-    if: ${{ needs.check.outputs.check_pr_labels_result.boolean }} != 'true'
+    if: ${{ needs.check.outputs.check_pr_labels_result.boolean }} == 'true'
     uses: ./.github/workflows/deploy.yml
     with:
       env_with_suffix: prd
