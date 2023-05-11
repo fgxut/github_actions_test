@@ -6,17 +6,7 @@ on:
       - main
 
 jobs:
-  check_1:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo ${{ toJson(github.event.pull_request.labels.*.name) }}
-      - run: echo ${GITHUB_REF##*/}
-      - run: echo ${{ github.ref }}
-      
-  check_2:
-    uses: ./.github/workflows/check.yml
-
-  check_3:
+  check:
     runs-on: ubuntu-latest
     steps:
       - name: Check PR labels action step
@@ -25,7 +15,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           labels: '["NO_NEED_TO_DOUBLE_CHECK"]'
-        timeout-minutes: 3
+        timeout-minutes: 5
       - name: See result
         id: check_pr_labels_result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
@@ -33,8 +23,8 @@ jobs:
       check_pr_labels_result: ${{ steps.check_pr_labels_result.outputs.status }}
 
   deploy:
-    needs: check_3
-    if : ${{needs.check_3.outputs.check_pr_labels_result}} == 'true'
+    needs: check
+    if : ${{needs.check.outputs.check_pr_labels_result}} == 'false'
     uses: ./.github/workflows/deploy.yml
     with:
       env_with_suffix: prd
