@@ -6,11 +6,10 @@ on:
       - main
 
 jobs:
-  check:
+  check-pr-labels:
     runs-on: ubuntu-latest
     outputs:
-      check_pr_labels_result: ${{ steps.check_pr_labels_result.outputs.boolean }}
-
+      check_pr_labels_result: ${{ steps.check_pr_labels_result.outputs.result }}
     steps:
       - name: Check PR labels action step
         id: check_pr_labels
@@ -18,18 +17,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           labels: '["NO_NEED_TO_DOUBLE_CHECK"]'
-        timeout-minutes: 3
+        timeout-minutes: 5
       - name: See result
         id: check_pr_labels_result
-        run: echo "boolean=${{ steps.check_pr_labels.outputs.result }}" >> "$GITHUB_OUTPUT"
+        run: echo "result=${{ steps.check_pr_labels.outputs.result }}" >> "$GITHUB_OUTPUT"
 
-  check2:
-    needs: check
+  check-pr-labels-result:
+    needs: check-pr-labels
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ needs.check.outputs.check_pr_labels_result }}
+      - run: echo ${{ needs.check-pr-labels.outputs.check_pr_labels_result }}
 
   deploy:
-    needs: check
-    if: needs.check.outputs.check_pr_labels_result == 'false'
+    needs: check-pr-labels
+    if: needs.check-pr-labels.outputs.check_pr_labels_result == 'false'
     uses: ./.github/workflows/deploy.yml
