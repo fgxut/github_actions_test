@@ -26,13 +26,12 @@ jobs:
         id: test
         run: echo "test=hello" >> "$GITHUB_OUTPUT"
 
-
   check2:
     needs: check
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ needs.check.outputs.check_pr_labels_result.boolean }}"
-      - run: echo "${{ needs.check.outputs.test.test }}"
+      - run: echo ${{ needs.check.outputs.check_pr_labels_result.boolean }}
+      - run: echo ${{ needs.check.outputs.test.test }}
 
   deploy:
     needs: check
