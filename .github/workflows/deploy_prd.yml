@@ -20,7 +20,7 @@ jobs:
         timeout-minutes: 5
       - name: See result
         id: check_pr_labels_result
-        run: echo "${{ steps.check_pr_labels.outputs.result }}" >> $GITHUB_OUTPUT
+        run: echo "${{ steps.check_pr_labels.outputs.result }}" >> "$GITHUB_OUTPUT"
 
   check2:
     needs: check
