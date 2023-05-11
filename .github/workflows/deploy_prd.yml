@@ -9,7 +9,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     outputs:
-      check_pr_labels_result: ${{ steps.check_pr_labels_result.outputs.status }}
+      check_pr_labels_result: ${{ steps.check_pr_labels_result.outputs.boolean }}
     steps:
       - name: Check PR labels action step
         id: check_pr_labels
