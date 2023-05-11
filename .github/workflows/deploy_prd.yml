@@ -26,7 +26,7 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ needs.check.outputs.check_pr_labels_result.boolean }}
+      - run: echo "${{ needs.check.outputs.check_pr_labels_result.boolean }}"
 
   deploy:
     needs: check
