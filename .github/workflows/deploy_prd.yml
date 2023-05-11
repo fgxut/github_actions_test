@@ -20,17 +20,17 @@ jobs:
         timeout-minutes: 5
       - name: See result
         id: check_pr_labels_result
-        run: echo "${{ steps.check_pr_labels.outputs.result }}" >> "$GITHUB_OUTPUT"
+        run: echo "boolean=${{ steps.check_pr_labels.outputs.result }}" >> "$GITHUB_OUTPUT"
 
   check2:
     needs: check
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ needs.check.outputs.check_pr_labels_result }}
+      - run: echo ${{ needs.check.outputs.check_pr_labels_result.boolean }}
 
   deploy:
     needs: check
-    if : ${{ needs.check.outputs.check_pr_labels_result }} == 'false'
+    if : ${{ needs.check.outputs.check_pr_labels_result.boolean }} == 'false'
     uses: ./.github/workflows/deploy.yml
     with:
       env_with_suffix: prd
