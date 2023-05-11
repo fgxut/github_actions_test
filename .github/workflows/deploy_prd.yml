@@ -22,20 +22,16 @@ jobs:
       - name: See result
         id: check_pr_labels_result
         run: echo "boolean=${{ steps.check_pr_labels.outputs.result }}" >> "$GITHUB_OUTPUT"
-      - name: See result
-        id: test
-        run: echo "result=${{ steps.check_pr_labels.outputs.result }}" >> "$GITHUB_ENV"
 
   check2:
     needs: check
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ needs.check.outputs.check_pr_labels_result }}
-      - run: echo ${{ env.result }}
 
   deploy:
     needs: check
-    if: ${{ needs.check.outputs.check_pr_labels_result.boolean }} == true
+    if: ${{ needs.check.outputs.check_pr_labels_result }} == 'true'
     uses: ./.github/workflows/deploy.yml
     with:
       env_with_suffix: prd
