@@ -21,12 +21,6 @@ jobs:
         run: |
           MESSAGE="test [${ENV_WITH_SUFFIX}] is now deployed :tada:"
 
-          if [[ ${{ github.event_name }} = 'pull_request' ]]; then
-            PR_NUMBER=${{ github.event.pull_request.number }}
-
-            MESSAGE+="\nPR: https://github.com/fgxut/github_actions_test/pull/${PR_NUMBER}"
-          fi
-
           MESSAGE+="\nWorkFlow Created By: ${{ github.actor }}"
           MESSAGE+="\nLatest Commit Hash: ${{ github.sha }}"
 
