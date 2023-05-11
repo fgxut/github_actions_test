@@ -19,7 +19,6 @@ jobs:
     uses: ./.github/workflows/check.yml
 
   deploy:
-    if: ${{ !startsWith(github.ref, 'refs/tags/NO_NEED_TO_DOUBLE_CHECK') }}
     uses: ./.github/workflows/deploy.yml
     with:
       env_with_suffix: prd
