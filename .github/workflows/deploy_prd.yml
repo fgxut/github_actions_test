@@ -33,5 +33,3 @@ jobs:
     needs: check
     if: needs.check.outputs.check_pr_labels_result == 'false'
     uses: ./.github/workflows/deploy.yml
-    with:
-      env_with_suffix: prd
