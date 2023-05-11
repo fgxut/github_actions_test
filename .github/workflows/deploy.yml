@@ -20,6 +20,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           labels: '["NO_NEED_TO_DOUBLE_CHECK"]'
-        timeout-minutes: 3
+        timeout-minutes: 5
       - name: See result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
