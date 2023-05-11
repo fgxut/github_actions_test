@@ -13,7 +13,7 @@ env:
   ENV_WITH_SUFFIX: ${{ inputs.env_with_suffix }}
 
 jobs:
-  Explore-GitHub-Actions:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Set variables for notification message
