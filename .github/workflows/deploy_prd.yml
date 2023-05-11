@@ -8,6 +8,8 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    outputs:
+      check_pr_labels_result: ${{ steps.check_pr_labels_result.outputs.status }}
     steps:
       - name: Check PR labels action step
         id: check_pr_labels
@@ -19,8 +21,6 @@ jobs:
       - name: See result
         id: check_pr_labels_result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
-    outputs:
-      check_pr_labels_result: ${{ steps.check_pr_labels_result.outputs.status }}
 
   check2:
     needs: check
@@ -30,7 +30,7 @@ jobs:
 
   deploy:
     needs: check
-    if : ${{needs.check.outputs.check_pr_labels_result}} == 'false'
+    if : ${{ needs.check.outputs.check_pr_labels_result }} == 'false'
     uses: ./.github/workflows/deploy.yml
     with:
       env_with_suffix: prd
