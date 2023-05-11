@@ -27,9 +27,14 @@ jobs:
           labels: '["NO_NEED_TO_DOUBLE_CHECK"]'
         timeout-minutes: 3
       - name: See result
+        id: check_pr_labels_result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
+    outputs:
+      check_pr_labels_result: ${{ steps.check_pr_labels_result.outputs.status }}
 
   deploy:
+    needs: check_3
+    if : ${{needs.check_3.outputs.check_pr_labels_result}} == 'false'
     uses: ./.github/workflows/deploy.yml
     with:
       env_with_suffix: prd
