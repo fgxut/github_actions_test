@@ -16,23 +16,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Set variables for notification message
-        shell: bash
-        run: |
-          MESSAGE="test [${ENV_WITH_SUFFIX}] is now deployed :tada:"
-
-          MESSAGE+="\nWorkFlow Created By: ${{ github.actor }}"
-          MESSAGE+="\nLatest Commit Hash: ${{ github.sha }}"
-
-          echo MESSAGE="$MESSAGE" >> "$GITHUB_ENV"
-
-      - name: Check GITHUB_ENV
-        run: echo ${{ env.MESSAGE }}
-
-      - name: Check labels
-        run: |
-          echo ${{ toJson(github.event.pull_request.labels.*.name) }}
-
       - name: Check NO_NEED_TO_DOUBLE_CHECK label
         if: contains(github.event.pull_request.labels.*.name, 'NO_NEED_TO_DOUBLE_CHECK')      
         run: |
