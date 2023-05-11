@@ -31,7 +31,7 @@ jobs:
 
   deploy:
     needs: check
-    if: ${{ needs.check.outputs.check_pr_labels_result }} != 'false'
+    if: ${{ needs.check.outputs.check_pr_labels_result }} == true
     uses: ./.github/workflows/deploy.yml
     with:
       env_with_suffix: prd
