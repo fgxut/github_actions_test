@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       check_pr_labels_result: ${{ steps.check_pr_labels_result.outputs.boolean }}
+      test: ${{ steps.test.outputs.test }}
     steps:
       - name: Check PR labels action step
         id: check_pr_labels
@@ -21,12 +22,17 @@ jobs:
       - name: See result
         id: check_pr_labels_result
         run: echo "boolean=${{ steps.check_pr_labels.outputs.result }}" >> "$GITHUB_OUTPUT"
+      - name: Test
+        id: test
+        run: echo "test=hello" >> "$GITHUB_OUTPUT"
+
 
   check2:
     needs: check
     runs-on: ubuntu-latest
     steps:
       - run: echo "${{ needs.check.outputs.check_pr_labels_result.boolean }}"
+      - run: echo "${{ needs.check.outputs.test.test }}"
 
   deploy:
     needs: check
