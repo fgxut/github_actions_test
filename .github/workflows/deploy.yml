@@ -37,3 +37,13 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'NO_NEED_TO_DOUBLE_CHECK')      
         run: |
           echo "NO_NEED_TO_DOUBLE_CHECK is labeled"
+
+      - name: Check PR labels action step
+        id: check_pr_labels
+        uses: shioyang/check-pr-labels-on-push-action@v1.0.9
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labels: '["NO_NEED_TO_DOUBLE_CHECK"]'
+        timeout-minutes: 5
+      - name: See result
+        run: echo "${{ steps.check_pr_labels.outputs.result }}"
