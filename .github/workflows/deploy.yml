@@ -1,25 +1,10 @@
-name: GitHub Actions Demo
+name: Deploy
 
 on:
   workflow_call:
-    inputs:
-      env_with_suffix:
-        required: true
-        type: string
-
-env:
-  ENV_WITH_SUFFIX: ${{ inputs.env_with_suffix }}
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Check PR labels action step
-        id: check_pr_labels
-        uses: shioyang/check-pr-labels-on-push-action@v1.0.9
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          labels: '["NO_NEED_TO_DOUBLE_CHECK"]'
-        timeout-minutes: 3
-      - name: See result
-        run: echo "${{ steps.check_pr_labels.outputs.result }}"
+      - run: echo "Deployment started."
