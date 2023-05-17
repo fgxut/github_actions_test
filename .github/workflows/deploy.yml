@@ -25,11 +25,11 @@ jobs:
         shell: bash
         run: |
           MESSAGE="hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:\n
-          Workflow\n
-            URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\n
-            Created By: ${{ github.actor }}\n
-          Repository\n
-            Latest Commit Hash: ${{ github.sha }}"
+                   Workflow\n
+                     URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\n
+                     Created By: ${{ github.actor }}\n
+                   Repository\n
+                     Latest Commit Hash: ${{ github.sha }}"
 
           if [[ ${{ github.event_name }} = 'pull_request' ]]; then
             MESSAGE+="\n  Branch: ${GITHUB_REF_NAME}"
