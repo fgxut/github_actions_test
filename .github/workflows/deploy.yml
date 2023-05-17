@@ -65,7 +65,7 @@ jobs:
       - name: Set variables for notification message 2
         shell: bash
         run: |
-          MESSAGE_2+="lf-word-direct [${ENV_WITH_SUFFIX}] is now deployed :tada:''
+          MESSAGE_2+="lf-word-direct [${ENV_WITH_SUFFIX}] is now deployed :tada:"
           MESSAGE_2+="\nWorkflow"
           MESSAGE_2+="\n  URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           MESSAGE_2+="\n  Created By: ${{ github.actor }}"
