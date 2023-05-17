@@ -24,16 +24,18 @@ jobs:
       - name: Set variables for notification message
         shell: bash
         run: | 
-          MESSAGE="hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:
-                   \n Workflow
-                   \n  URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
-                   \n  Created By: ${{ github.actor }}
-                   \n Repository
-                   \n  Latest Commit Hash: ${{ github.sha }}"
+          MESSAGE="
+            hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:
+            \n Workflow
+            \n \t URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+            \n \t Created By: ${{ github.actor }}
+            \n Repository
+            \n \t Latest Commit Hash: ${{ github.sha }}
+          g"
 
           if [[ ${{ github.event_name }} = 'pull_request' ]]; then
-            MESSAGE+="\n  Branch: ${GITHUB_REF_NAME}"
-            MESSAGE+="\n  PR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
+            MESSAGE+="\n \t Branch: ${GITHUB_REF_NAME}"
+            MESSAGE+="\n \t PR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
           fi
 
           echo "MESSAGE<<EOF" >> $GITHUB_ENV
