@@ -102,15 +102,6 @@ jobs:
       - name: Set variables for notification message 3
         shell: bash
         run: |
-          MESSAGE_1="
-            hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:
-            \n Workflow
-            \n \b \b URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
-            \n \b \b Created By: ${{ github.actor }}
-            \n Repository
-            \n \b \b Latest Commit Hash: ${{ github.sha }}
-          "
-
           MESSAGE_3="$(cat <<EOS
           lf-word-direct [${ENV_WITH_SUFFIX}] is now deployed :tada:
           Workflow
