@@ -25,15 +25,15 @@ jobs:
         shell: bash
         run: |
           MESSAGE="hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:
-                   \n Workflow
-                   \n\b\b URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
-                   \n\b\b Created By: ${{ github.actor }}
-                   \n Repository
-                   \n\b\b  Latest Commit Hash: ${{ github.sha }}"
+                   \nWorkflow
+                   \n\b\bURL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+                   \n\b\bCreated By: ${{ github.actor }}
+                   \nRepository
+                   \n\b\bLatest Commit Hash: ${{ github.sha }}"
 
           if [[ ${{ github.event_name }} = 'pull_request' ]]; then
-            MESSAGE+="\n\b\b Branch: ${GITHUB_REF_NAME}"
-            MESSAGE+="\n\b\b PR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
+            MESSAGE+="\n\b\bBranch: ${GITHUB_REF_NAME}"
+            MESSAGE+="\n\b\bPR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
           fi
 
           echo "MESSAGE<<EOF" >> $GITHUB_ENV
