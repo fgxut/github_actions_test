@@ -98,4 +98,53 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - name: Set variables for notification message 3
+        shell: bash
+        run: |
+          MESSAGE_1="
+            hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:
+            \n Workflow
+            \n \b \b URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+            \n \b \b Created By: ${{ github.actor }}
+            \n Repository
+            \n \b \b Latest Commit Hash: ${{ github.sha }}
+          "
+
+          MESSAGE_3="$(cat <<EOS
+          lf-word-direct [${ENV_WITH_SUFFIX}] is now deployed :tada:
+          Workflow
+            URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+            Created By: ${{ github.actor }}
+          Repository
+            Latest Commit Hash: ${{ github.sha }}
+          EOS
+          )"
+
+          if [[ ${{ github.event_name }} = 'pull_request' ]]; then
+            MESSAGE_3+="\n   Branch: ${GITHUB_REF_NAME}"
+            MESSAGE_3+="\n   PR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
+          fi
+        
+          echo MESSAGE_3="$MESSAGE_3" >> "$GITHUB_ENV"
+          
+      - name: Send custom JSON data to Slack workflow
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "${{ env.MESSAGE_3 }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.MESSAGE_3 }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         
