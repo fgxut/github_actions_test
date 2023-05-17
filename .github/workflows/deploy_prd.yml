@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
 
 jobs:
   check-pr-labels:
@@ -32,3 +40,5 @@ jobs:
     needs: check-pr-labels
     if: needs.check-pr-labels.outputs.check_pr_labels_result == 'false'
     uses: ./.github/workflows/deploy.yml
+    with:
+      env_with_suffix: prd

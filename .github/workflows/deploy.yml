@@ -2,9 +2,40 @@ name: Deploy
 
 on:
   workflow_call:
+    inputs:
+      env_with_suffix:
+        required: true
+        type: string
+
+env:
+  AWS_ACCOUNT_ID: ${{ inputs.aws_account_id }}
+  ENV: ${{ inputs.env }}
+  ENV_WITH_SUFFIX: ${{ inputs.env_with_suffix }}
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Deployment started."
+
+      - name: Set variables for notification message
+        shell: bash
+        run: |
+          MESSAGE="hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:\n
+          Workflow\n
+            URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\n
+            Created By: ${{ github.actor }}\n
+          Repository\n
+            Latest Commit Hash: ${{ github.sha }}"
+
+          if [[ ${{ github.event_name }} = 'pull_request' ]]; then
+            MESSAGE+="\n  Branch: ${GITHUB_REF_NAME}"
+            MESSAGE+="\n  PR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
+          fi
+
+          echo "MESSAGE<<EOF" >> $GITHUB_ENV
+          echo $MESSAGE >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Notify to Slack
+        run: echo "${{ env.MESSAGE }}"
