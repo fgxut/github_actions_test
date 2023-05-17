@@ -6,6 +6,9 @@ on:
       env_with_suffix:
         required: true
         type: string
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
 
 env:
   AWS_ACCOUNT_ID: ${{ inputs.aws_account_id }}
@@ -18,24 +21,121 @@ jobs:
     steps:
       - run: echo "Deployment started."
 
-      - name: Set variables for notification message
+      - name: Set variables for notification message 1
         shell: bash
         run: |
-          MESSAGE="hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:\n
-          Workflow\n
-            URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\n
-            Created By: ${{ github.actor }}\n
-          Repository\n
-            Latest Commit Hash: ${{ github.sha }}"
+          MESSAGE_1="
+            hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:
+            \n Workflow
+            \n \b \b URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+            \n \b \b Created By: ${{ github.actor }}
+            \n Repository
+            \n \b \b Latest Commit Hash: ${{ github.sha }}
+          "
 
           if [[ ${{ github.event_name }} = 'pull_request' ]]; then
-            MESSAGE+="\n  Branch: ${GITHUB_REF_NAME}"
-            MESSAGE+="\n  PR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
+            MESSAGE_1+="\n \b \b Branch: ${GITHUB_REF_NAME}"
+            MESSAGE_1+="\n \b \b PR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
           fi
 
-          echo "MESSAGE<<EOF" >> $GITHUB_ENV
-          echo $MESSAGE >> $GITHUB_ENV
+          echo "MESSAGE_1<<EOF" >> $GITHUB_ENV
+          echo $MESSAGE_1 >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Notify to Slack
-        run: echo "${{ env.MESSAGE }}"
+      - name: Send custom JSON data to Slack workflow
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "${{ env.MESSAGE_1 }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.MESSAGE_1 }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - name: Set variables for notification message 2
+        shell: bash
+        run: |
+          MESSAGE_2+="hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:"
+          MESSAGE_2+="\n Workflow"
+          MESSAGE_2+="\n   URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          MESSAGE_2+="\n   Created By: ${{ github.actor }}"
+          MESSAGE_2+="\n Repository"
+          MESSAGE_2+="\n   Latest Commit Hash: ${{ github.sha }}"
+
+          if [[ ${{ github.event_name }} = 'pull_request' ]]; then
+            MESSAGE_2+="\n   Branch: ${GITHUB_REF_NAME}"
+            MESSAGE_2+="\n   PR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
+          fi
+
+          echo MESSAGE_2="$MESSAGE_2" >> "$GITHUB_ENV"
+
+      - name: Send custom JSON data to Slack workflow
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "${{ env.MESSAGE_2 }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.MESSAGE_2 }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      # - name: Set variables for notification message 3
+      #   shell: bash
+      #   run: |
+      #     MESSAGE_3="$(cat <<EOS
+      #     lf-word-direct [${ENV_WITH_SUFFIX}] is now deployed :tada:
+      #     Workflow
+      #       URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+      #       Created By: ${{ github.actor }}
+      #     Repository
+      #       Latest Commit Hash: ${{ github.sha }}
+      #     EOS
+      #     )"
+
+      #     if [[ ${{ github.event_name }} = 'pull_request' ]]; then
+      #       MESSAGE_3+="\n   Branch: ${GITHUB_REF_NAME}"
+      #       MESSAGE_3+="\n   PR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
+      #     fi
+        
+      #     echo MESSAGE_3="$MESSAGE_3" >> "$GITHUB_ENV"
+          
+      # - name: Send custom JSON data to Slack workflow
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   with:
+      #     payload: |
+      #       {
+      #         "text": "${{ env.MESSAGE_3 }}",
+      #         "blocks": [
+      #           {
+      #             "type": "section",
+      #             "text": {
+      #               "type": "mrkdwn",
+      #               "text": "${{ env.MESSAGE_3 }}"
+      #             }
+      #           }
+      #         ]
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        
