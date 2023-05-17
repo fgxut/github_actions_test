@@ -6,6 +6,9 @@ on:
       env_with_suffix:
         required: true
         type: string
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
 
 env:
   AWS_ACCOUNT_ID: ${{ inputs.aws_account_id }}
@@ -37,5 +40,22 @@ jobs:
           echo $MESSAGE >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Notify to Slack
-        run: echo "${{ env.MESSAGE }}"
+      - name: Send custom JSON data to Slack workflow
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "${{ env.MESSAGE }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.MESSAGE }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
