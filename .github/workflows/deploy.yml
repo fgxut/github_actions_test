@@ -27,15 +27,15 @@ jobs:
           MESSAGE_1="
             hoge [${ENV_WITH_SUFFIX}] is now deployed :tada:
             \n Workflow
-            \n\t URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
-            \n\t Created By: ${{ github.actor }}
+            \n\tURL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+            \n\tCreated By: ${{ github.actor }}
             \n Repository
-            \n\t Latest Commit Hash: ${{ github.sha }}
+            \n\tLatest Commit Hash: ${{ github.sha }}
           "
 
           if [[ ${{ github.event_name }} = 'pull_request' ]]; then
-            MESSAGE_1+="\n\t Branch: ${GITHUB_REF_NAME}"
-            MESSAGE_1+="\n\t PR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
+            MESSAGE_1+="\n\tBranch: ${GITHUB_REF_NAME}"
+            MESSAGE_1+="\n\tPR: https://github.com/fgxut/github_actions_test/pull/${{ github.event.pull_request.number }}"
           fi
 
           echo "MESSAGE_1<<EOF" >> $GITHUB_ENV
