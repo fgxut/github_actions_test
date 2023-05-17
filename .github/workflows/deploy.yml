@@ -31,7 +31,7 @@ jobs:
             \n \t Created By: ${{ github.actor }}
             \n Repository
             \n \t Latest Commit Hash: ${{ github.sha }}
-          g"
+          "
 
           if [[ ${{ github.event_name }} = 'pull_request' ]]; then
             MESSAGE+="\n \t Branch: ${GITHUB_REF_NAME}"
